@@ -2,9 +2,10 @@ import { combineReducers } from 'redux'
 import { fromJS } from 'immutable'
 import { 
 	ADD_CARD_TO_GAME_TABLE,
-	SELECT_CARD_FROM_PLAYER_HAND,
-	CLEAR_SELECTED_PLAYER_CARD,
+	SELECT_CARD,
+	CLEAR_SELECTED_CARD,
 } from './ActionTypes'
+import { isSkipBo, isNextCard, } from './utils'
 
 const gameTableInitialState = fromJS([
 	[],
@@ -13,10 +14,15 @@ const gameTableInitialState = fromJS([
 	[],
 ])
 
-const myHandInitialState = fromJS({
-	selectedPlayerCard: null,
+const selectedCardInitialState = fromJS({
+	card: null,
 })
 
+// Fetch from server
+const myDeckInitialState = fromJS({
+	size: 25, 
+	topMostCard: 4,
+})
 
 function players(state = fromJS({}), action) {
 	switch(action.type) {
@@ -28,10 +34,30 @@ function players(state = fromJS({}), action) {
 function gameTable(state = gameTableInitialState, action) {
 	switch(action.type) {
 		case ADD_CARD_TO_GAME_TABLE:
-			const lastCardInStack = state.get(action.stack).last(0)
+			const stack = state.get(action.stack)
+			const lastCardInStack = stack.last(null)
 			
-			if(action.card !== 0 && lastCardInStack + 1 !== action.card) {
+			// Empty stack and card must be SkipBo or 1.
+			if(lastCardInStack === null && action.card > 1) {
 				return state
+			}
+			// Non-empty stack 
+			if(lastCardInStack !== null) {
+				// ... and card must be next in sequence to the last card.
+				if(!isSkipBo(lastCardInStack) && !isNextCard(action.card, lastCardInStack)) {
+					return state
+				}
+				// ... and last card is SkipBo. Also, when the card being placed is not SkipBo 
+				// we have to check if it's next in sequence to the last card.
+				if(isSkipBo(lastCardInStack) && !isSkipBo(action.card)) {
+				  const skipBos = stack.reverse().takeWhile(isSkipBo)
+				  const lastNonSkipBoIndex = stack.size - skipBos.size - 1
+					const skipBoValueInStack = stack.get(lastNonSkipBoIndex) + skipBos.size
+
+					if(!isNextCard(action.card, skipBoValueInStack)) {
+						return state
+					}
+				}
 			}
 			return state.updateIn(
 				[action.stack],
@@ -42,26 +68,27 @@ function gameTable(state = gameTableInitialState, action) {
 	}
 }
 
-function myDeck(state = fromJS({}), action) {
+function myDeck(state = myDeckInitialState, action) {
 	switch(action.type) {
 		default: 
+
 			return state
 	}
 }
 
-function myHand(state = myHandInitialState, action) {
+function selectedCard(state = selectedCardInitialState, action) {
 	switch(action.type) {
-		case SELECT_CARD_FROM_PLAYER_HAND:
-			return state.set('selectedPlayerCard', action.card)
-		case CLEAR_SELECTED_PLAYER_CARD:
-			return state.set('selectedPlayerCard', null)
+		case SELECT_CARD:
+			return state.set('card', action.card)
+		case CLEAR_SELECTED_CARD:
+			return state.set('card', null)
 		default: 
 			return state
 	}
 }
 
 const GameEngine = combineReducers({
-	myHand,
+	selectedCard,
 	myDeck,
 	players,
 	gameTable,

@@ -1,6 +1,7 @@
 import React from 'react'
 import PlayerHand from './PlayerHandContainer'
 import GameTable from './GameTableContainer'
+import PlayerDeck from './PlayerDeckContainer'
 
 export default function App(props) {
   
@@ -9,7 +10,7 @@ export default function App(props) {
         <div>
           <GameTable/>
         </div>
-        
+        <PlayerDeck/>
         <PlayerHand/>
       </div>
     )

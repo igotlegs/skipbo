@@ -4,7 +4,7 @@ import GameTable from './GameTable'
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		selectedCard: state.myHand.get('selectedPlayerCard'),
+		selectedCard: state.selectedCard.get('card'),
 		cardStacks: state.gameTable.toJS(),
 	}
 }

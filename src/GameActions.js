@@ -1,7 +1,7 @@
 import { 
 	ADD_CARD_TO_GAME_TABLE,
-	SELECT_CARD_FROM_PLAYER_HAND,
-	CLEAR_SELECTED_PLAYER_CARD,
+	SELECT_CARD,
+	CLEAR_SELECTED_CARD,
 } from './ActionTypes'
 
 export const addCardToGameTable = (stack, card) => {
@@ -12,15 +12,15 @@ export const addCardToGameTable = (stack, card) => {
 			card,
 		})
 
-		dispatch(clearSelectedPlayerCard())
+		dispatch(clearSelectedCard())
 	}
 }
 
-export const selectCardFromPlayerHand = (card) => ({
-	type: SELECT_CARD_FROM_PLAYER_HAND,
+export const selectCard = (card) => ({
+	type: SELECT_CARD,
 	card,
 })
 
-export const clearSelectedPlayerCard = () => ({
-	type: CLEAR_SELECTED_PLAYER_CARD,
+export const clearSelectedCard = () => ({
+	type: CLEAR_SELECTED_CARD,
 })
