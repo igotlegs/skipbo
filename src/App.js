@@ -2,6 +2,7 @@ import React from 'react'
 import PlayerHand from './PlayerHandContainer'
 import GameTable from './GameTableContainer'
 import PlayerDeck from './PlayerDeckContainer'
+import PlayerTableCards from './PlayerTableCardsContainer'
 
 export default function App(props) {
   
@@ -12,6 +13,7 @@ export default function App(props) {
         </div>
         <PlayerDeck/>
         <PlayerHand/>
+        <PlayerTableCards/>
       </div>
     )
 }

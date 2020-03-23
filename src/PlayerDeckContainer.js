@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 import { selectCard } from './GameActions'
 import PlayerDeck from './PlayerDeck'
+import CardOrigin from './CardOrigin'
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -12,7 +13,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onSelectCard: (card) => {
-    		dispatch(selectCard(card))
+    		dispatch(selectCard(card, CardOrigin.PLAYER_DECK))
     }
   }
 }

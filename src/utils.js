@@ -6,3 +6,5 @@ export const isNextCard = (next, current) => {
 	}
 	return false
 }
+
+export const noop = () => {}

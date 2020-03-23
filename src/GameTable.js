@@ -22,7 +22,7 @@ const GameTable = (props) => {
   })
 
   return (
-    <div>
+    <div className="game-table">
       {cardStackElements}
     </div>
   )

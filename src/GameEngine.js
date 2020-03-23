@@ -4,6 +4,8 @@ import {
 	ADD_CARD_TO_GAME_TABLE,
 	SELECT_CARD,
 	CLEAR_SELECTED_CARD,
+	ADD_CARD_TO_PLAYER_TABLE_CARDS,
+	REMOVE_CARD_FROM_PLAYER_TABLE_STACK,
 } from './ActionTypes'
 import { isSkipBo, isNextCard, } from './utils'
 
@@ -16,6 +18,8 @@ const gameTableInitialState = fromJS([
 
 const selectedCardInitialState = fromJS({
 	card: null,
+	origin: null,
+	stack: null,
 })
 
 // Fetch from server
@@ -23,6 +27,13 @@ const myDeckInitialState = fromJS({
 	size: 25, 
 	topMostCard: 4,
 })
+
+const myTableCardsInitialState = fromJS([
+	[],
+	[],
+	[],
+	[],
+])
 
 function players(state = fromJS({}), action) {
 	switch(action.type) {
@@ -76,22 +87,50 @@ function myDeck(state = myDeckInitialState, action) {
 	}
 }
 
+function myTableCards(state = myTableCardsInitialState, action) {
+	switch(action.type) {
+		case ADD_CARD_TO_PLAYER_TABLE_CARDS:
+			return state.updateIn(
+				[action.stack],
+				cardStack => cardStack.push(action.card)
+			)
+
+		case REMOVE_CARD_FROM_PLAYER_TABLE_STACK:
+			return state.updateIn(
+				[action.stack],
+				cardStack => cardStack.pop()
+			)
+
+		default: 
+			return state
+	}
+}
+
 function selectedCard(state = selectedCardInitialState, action) {
 	switch(action.type) {
 		case SELECT_CARD:
-			return state.set('card', action.card)
+			return state.merge({
+				card: action.card, 
+				origin: action.origin,
+				stack: action.stack,
+			})
 		case CLEAR_SELECTED_CARD:
-			return state.set('card', null)
+			return state.merge({
+				card: null, 
+				origin: null, 
+				stack: null
+			})
 		default: 
 			return state
 	}
 }
 
 const GameEngine = combineReducers({
-	selectedCard,
-	myDeck,
+	selectedCard, // never sync
+	gameTable, // will be synced
+	myDeck, // never sync
+	myTableCards, // will be synced
 	players,
-	gameTable,
 })
 
 export default GameEngine
