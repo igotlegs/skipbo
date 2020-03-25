@@ -6,8 +6,8 @@ import {
 	CLEAR_SELECTED_CARD,
 	ADD_CARD_TO_PLAYER_TABLE_CARDS,
 	REMOVE_CARD_FROM_PLAYER_TABLE_STACK,
-} from './ActionTypes'
-import { isSkipBo, isNextCard, } from './utils'
+} from '../constants/ActionTypes'
+import { isSkipBo, isNextCard, } from '../utils'
 
 const gameTableInitialState = fromJS([
 	[],

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
-import { selectCard } from './GameActions'
-import PlayerHand from './PlayerHand'
-import CardOrigin from './CardOrigin'
+import { selectCard } from '../actions/GameActions'
+import PlayerHand from '../components/PlayerHand'
+import CardOrigin from '../constants/CardOrigin'
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {

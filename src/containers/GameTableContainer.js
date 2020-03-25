@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
-import { addCardToGameTable } from './GameActions'
-import GameTable from './GameTable'
+import { addCardToGameTable } from '../actions/GameActions'
+import GameTable from '../components/GameTable'
 
 const mapStateToProps = (state, ownProps) => {
 	return {

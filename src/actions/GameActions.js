@@ -4,8 +4,8 @@ import {
 	CLEAR_SELECTED_CARD,
 	ADD_CARD_TO_PLAYER_TABLE_CARDS,
 	REMOVE_CARD_FROM_PLAYER_TABLE_STACK,
-} from './ActionTypes'
-import CardOrigin from './CardOrigin'
+} from '../constants/ActionTypes'
+import CardOrigin from '../constants/CardOrigin'
 
 export const addCardToGameTable = (stack, card) => {
 	return (dispatch, getState) => {

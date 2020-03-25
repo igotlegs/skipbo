@@ -1,8 +1,8 @@
 import React from 'react'
-import PlayerHand from './PlayerHandContainer'
-import GameTable from './GameTableContainer'
-import PlayerDeck from './PlayerDeckContainer'
-import PlayerTableCards from './PlayerTableCardsContainer'
+import PlayerHand from '../containers/PlayerHandContainer'
+import GameTable from '../containers/GameTableContainer'
+import PlayerDeck from '../containers/PlayerDeckContainer'
+import PlayerTableCards from '../containers/PlayerTableCardsContainer'
 
 export default function App(props) {
   

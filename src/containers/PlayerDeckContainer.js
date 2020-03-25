@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
-import { selectCard } from './GameActions'
-import PlayerDeck from './PlayerDeck'
-import CardOrigin from './CardOrigin'
+import { selectCard } from '../actions/GameActions'
+import PlayerDeck from '../components/PlayerDeck'
+import CardOrigin from '../constants/CardOrigin'
 
 const mapStateToProps = (state, ownProps) => {
 	return {

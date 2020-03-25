@@ -4,8 +4,8 @@ import { createStore, applyMiddleware, compose, } from 'redux'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 
-import GameEngine from './GameEngine'
-import App from './App'
+import GameEngine from './reducers/GameEngine'
+import App from './components/App'
 import './index.css'
 
 const reduxDevTools = window.__REDUX_DEVTOOLS_EXTENSION__ ? 
