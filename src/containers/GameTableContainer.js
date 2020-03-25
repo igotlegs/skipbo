@@ -5,7 +5,7 @@ import GameTable from '../components/GameTable'
 const mapStateToProps = (state, ownProps) => {
 	return {
 		selectedCard: state.selectedCard.get('card'),
-		cardStacks: state.gameTable.toJS(),
+		cardStacks: state.gameTable.get('stacks').toJS(),
 	}
 }
 

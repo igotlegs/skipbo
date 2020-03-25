@@ -20,6 +20,12 @@ const store = createStore(
 	)
 )
 
+if(module.hot) {
+  module.hot.accept('./reducers/GameEngine', () =>
+    store.replaceReducer(require('./reducers/GameEngine').default)
+  )
+}
+
 ReactDOM.render(
 	<Provider store={store}>
 		<App />

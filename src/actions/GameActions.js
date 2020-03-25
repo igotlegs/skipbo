@@ -4,6 +4,7 @@ import {
 	CLEAR_SELECTED_CARD,
 	ADD_CARD_TO_PLAYER_TABLE_CARDS,
 	REMOVE_CARD_FROM_PLAYER_TABLE_STACK,
+	SET_PLAYER_TABLE_CARDS_VIOLATION,
 } from '../constants/ActionTypes'
 import CardOrigin from '../constants/CardOrigin'
 
@@ -15,12 +16,16 @@ export const addCardToGameTable = (stack, card) => {
 			card,
 		})
 
-		const selectedCardState = getState().selectedCard.toJS()
+		const previousMoveFailed = getState().gameTable.get('previousMoveFailed')
 
-		if(selectedCardState.origin === CardOrigin.PLAYER_TABLE_STACK) {
+		if(!previousMoveFailed) {
+			const selectedCardState = getState().selectedCard.toJS()
+
+			if(selectedCardState.origin === CardOrigin.PLAYER_TABLE_STACK) {
 				dispatch(popCardFromPlayerTableStack(selectedCardState.stack))
+			}
+			dispatch(clearSelectedCard())
 		}
-		dispatch(clearSelectedCard())
 	}
 }
 
@@ -35,26 +40,27 @@ export const clearSelectedCard = () => ({
 	type: CLEAR_SELECTED_CARD,
 })
 
-export const selectCardFromDeck = (card) => {
-	return (dispatch) => {
-		dispatch(selectCard(card))
-
-	}
-}
-
 export const addCardToPlayerTableCards = (stack, card) => {
-	return (dispatch) => {
-		dispatch({
-			type: ADD_CARD_TO_PLAYER_TABLE_CARDS,
-			stack,
-			card,
-		})
+	return (dispatch, getState) => {
+		if(getState().selectedCard.get('origin') === CardOrigin.PLAYER_HAND) {
+			dispatch({
+				type: ADD_CARD_TO_PLAYER_TABLE_CARDS,
+				stack,
+				card,
+			})
 
-		dispatch(clearSelectedCard())
+			dispatch(clearSelectedCard())
+		} else {
+			dispatch(setCanNotMoveCardToPlayerTableCards())
+		}
 	}
 }
 
 export const popCardFromPlayerTableStack = (stack) => ({
 	type: REMOVE_CARD_FROM_PLAYER_TABLE_STACK,
 	stack,
+})
+
+export const setCanNotMoveCardToPlayerTableCards = () => ({
+	type: SET_PLAYER_TABLE_CARDS_VIOLATION,
 })

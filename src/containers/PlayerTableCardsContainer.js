@@ -9,7 +9,7 @@ import CardOrigin from '../constants/CardOrigin'
 const mapStateToProps = (state, ownProps) => {
 	return {
 		selectedCard: state.selectedCard.get('card'),
-		cardStacks: state.myTableCards.toJS(),
+		cardStacks: state.myTableCards.get('stacks').toJS(),
 	}
 }
 

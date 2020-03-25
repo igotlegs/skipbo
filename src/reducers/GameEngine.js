@@ -6,15 +6,19 @@ import {
 	CLEAR_SELECTED_CARD,
 	ADD_CARD_TO_PLAYER_TABLE_CARDS,
 	REMOVE_CARD_FROM_PLAYER_TABLE_STACK,
+  SET_PLAYER_TABLE_CARDS_VIOLATION,
 } from '../constants/ActionTypes'
 import { isSkipBo, isNextCard, } from '../utils'
 
-const gameTableInitialState = fromJS([
-	[],
-	[],
-	[],
-	[],
-])
+const gameTableInitialState = fromJS({
+  stacks: [
+  	[],
+  	[],
+  	[],
+  	[],
+  ],
+  previousMoveFailed: false,
+})
 
 const selectedCardInitialState = fromJS({
 	card: null,
@@ -28,12 +32,15 @@ const myDeckInitialState = fromJS({
 	topMostCard: 4,
 })
 
-const myTableCardsInitialState = fromJS([
-	[],
-	[],
-	[],
-	[],
-])
+const myTableCardsInitialState = fromJS({
+  stacks: [
+  	[],
+  	[],
+  	[],
+  	[],
+  ],
+  previousMoveFailed: false,
+})
 
 function players(state = fromJS({}), action) {
 	switch(action.type) {
@@ -45,18 +52,19 @@ function players(state = fromJS({}), action) {
 function gameTable(state = gameTableInitialState, action) {
 	switch(action.type) {
 		case ADD_CARD_TO_GAME_TABLE:
-			const stack = state.get(action.stack)
+			const stack = state.getIn(['stacks', action.stack])
 			const lastCardInStack = stack.last(null)
+      const setViolation = (state, flag) => state.set('previousMoveFailed', flag)
 			
 			// Empty stack and card must be SkipBo or 1.
 			if(lastCardInStack === null && action.card > 1) {
-				return state
+				return setViolation(state, true)
 			}
 			// Non-empty stack 
 			if(lastCardInStack !== null) {
 				// ... and card must be next in sequence to the last card.
 				if(!isSkipBo(lastCardInStack) && !isNextCard(action.card, lastCardInStack)) {
-					return state
+					return setViolation(state, true)
 				}
 				// ... and last card is SkipBo. Also, when the card being placed is not SkipBo 
 				// we have to check if it's next in sequence to the last card.
@@ -66,14 +74,18 @@ function gameTable(state = gameTableInitialState, action) {
 					const skipBoValueInStack = stack.get(lastNonSkipBoIndex) + skipBos.size
 
 					if(!isNextCard(action.card, skipBoValueInStack)) {
-						return state
+						return setViolation(state, true)
 					}
 				}
 			}
-			return state.updateIn(
-				[action.stack],
+
+			const newState = state.updateIn(
+				['stacks', action.stack],
 				cardStack => cardStack.push(action.card)
 			)
+      
+      return setViolation(newState, false)
+
 		default: 
 			return state
 	}
@@ -91,15 +103,18 @@ function myTableCards(state = myTableCardsInitialState, action) {
 	switch(action.type) {
 		case ADD_CARD_TO_PLAYER_TABLE_CARDS:
 			return state.updateIn(
-				[action.stack],
+				['stacks' ,action.stack],
 				cardStack => cardStack.push(action.card)
-			)
+			).set('previousMoveFailed', false)
 
 		case REMOVE_CARD_FROM_PLAYER_TABLE_STACK:
 			return state.updateIn(
-				[action.stack],
+				['stacks', action.stack],
 				cardStack => cardStack.pop()
 			)
+
+    case SET_PLAYER_TABLE_CARDS_VIOLATION: 
+      return state.set('previousMoveFailed', true)
 
 		default: 
 			return state
@@ -118,8 +133,9 @@ function selectedCard(state = selectedCardInitialState, action) {
 			return state.merge({
 				card: null, 
 				origin: null, 
-				stack: null
+				stack: null,
 			})
+
 		default: 
 			return state
 	}
