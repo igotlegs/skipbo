@@ -1,7 +1,0 @@
-const CardOrigin = {
-	PLAYER_DECK: 'PLAYER_DECK',
-	PLAYER_HAND: 'PLAYER_HAND',
-	PLAYER_TABLE_STACK: 'PLAYER_TABLE_STACK',
-}
-
-export default CardOrigin
