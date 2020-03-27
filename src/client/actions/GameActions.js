@@ -5,6 +5,7 @@ import {
 	ADD_CARD_TO_PLAYER_TABLE_CARDS,
 	REMOVE_CARD_FROM_PLAYER_TABLE_STACK,
 	SET_PLAYER_TABLE_CARDS_VIOLATION,
+	REMOVE_CARD_FROM_PLAYER_HAND,
 } from '../constants/ActionTypes'
 import CardOrigin from '../constants/CardOrigin'
 
@@ -23,6 +24,9 @@ export const addCardToGameTable = (stack, card) => {
 
 			if(selectedCardState.origin === CardOrigin.PLAYER_TABLE_STACK) {
 				dispatch(popCardFromPlayerTableStack(selectedCardState.stack))
+			}
+			if(selectedCardState.origin === CardOrigin.PLAYER_HAND) {
+				dispatch(removeCardFromPlayerHand(card))
 			}
 			dispatch(clearSelectedCard())
 		}
@@ -49,6 +53,7 @@ export const addCardToPlayerTableCards = (stack, card) => {
 				card,
 			})
 
+			dispatch(removeCardFromPlayerHand(card))
 			dispatch(clearSelectedCard())
 		} else {
 			dispatch(setCanNotMoveCardToPlayerTableCards())
@@ -64,3 +69,8 @@ export const popCardFromPlayerTableStack = (stack) => ({
 export const setCanNotMoveCardToPlayerTableCards = () => ({
 	type: SET_PLAYER_TABLE_CARDS_VIOLATION,
 })
+
+export const removeCardFromPlayerHand = (card) => ({
+	type: REMOVE_CARD_FROM_PLAYER_HAND,
+	card
+}) 

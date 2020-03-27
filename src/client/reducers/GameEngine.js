@@ -7,6 +7,7 @@ import {
 	ADD_CARD_TO_PLAYER_TABLE_CARDS,
 	REMOVE_CARD_FROM_PLAYER_TABLE_STACK,
   SET_PLAYER_TABLE_CARDS_VIOLATION,
+  REMOVE_CARD_FROM_PLAYER_HAND,
 } from '../constants/ActionTypes'
 import { isSkipBo, isNextCard, } from '../utils'
 
@@ -41,6 +42,8 @@ const myTableCardsInitialState = fromJS({
   ],
   previousMoveFailed: false,
 })
+
+const myHandInitialState = fromJS([1, 2, 11, 7, 0])
 
 function players(state = fromJS({}), action) {
 	switch(action.type) {
@@ -94,7 +97,16 @@ function gameTable(state = gameTableInitialState, action) {
 function myDeck(state = myDeckInitialState, action) {
 	switch(action.type) {
 		default: 
+			return state
+	}
+}
 
+function myHand(state = myHandInitialState, action) {
+	switch(action.type) {
+		case REMOVE_CARD_FROM_PLAYER_HAND:
+			return state.remove(state.indexOf(action.card))
+
+		default: 
 			return state
 	}
 }
@@ -145,6 +157,7 @@ const GameEngine = combineReducers({
 	selectedCard, // never sync
 	gameTable, // will be synced
 	myDeck, // never sync
+	myHand, // never sync
 	myTableCards, // will be synced
 	players,
 })

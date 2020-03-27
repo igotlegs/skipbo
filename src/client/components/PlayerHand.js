@@ -3,27 +3,15 @@ import PropTypes from 'prop-types'
 
 const PlayerHand = (props) => {
   
+    const cards = props.cards.map((card, i) => {
+      return <div key={i} onClick={() => props.onPickCard(card)}>
+               {card}
+             </div>
+    })
+
     return (
       <div>  
-        <div onClick={() => props.onPickCard(1)}>
-          blue 1        
-        </div>
-
-        <div onClick={() => props.onPickCard(2)}>
-          blue 2        
-        </div>
-
-        <div onClick={() => props.onPickCard(11)}>
-          red 11       
-        </div>
-
-        <div onClick={() => props.onPickCard(7)}>
-          green 7        
-        </div>
-
-        <div onClick={() => props.onPickCard(0)}>
-          skipbo       
-        </div>
+        {cards}
       </div>
     )
 }

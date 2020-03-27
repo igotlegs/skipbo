@@ -3,6 +3,12 @@ import { selectCard } from '../actions/GameActions'
 import PlayerHand from '../components/PlayerHand'
 import CardOrigin from '../constants/CardOrigin'
 
+const mapStateToProps = (state, ownProps) => {
+  return {
+    cards: state.myHand.toJS(),
+  }
+}
+
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onPickCard: (card) => {
@@ -11,6 +17,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-const PlayerHandContainer = connect(null, mapDispatchToProps)(PlayerHand)
+const PlayerHandContainer = connect(mapStateToProps, mapDispatchToProps)(PlayerHand)
 
 export default PlayerHandContainer
