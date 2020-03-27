@@ -1,5 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Card from './Card'
+import './GameTable.css'
 
 const GameTable = (props) => {
 
@@ -10,11 +12,7 @@ const GameTable = (props) => {
       <div className="game-table__stack" key={i} onClick={selectStack}>
         {
           stack.map((card, j) => {
-            return (
-              <div key={j}>
-                {card}
-              </div>
-            )
+            return <Card key={j} value={card}/>
           })
         }
       </div>

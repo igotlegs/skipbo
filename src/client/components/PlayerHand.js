@@ -1,17 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Card from './Card'
 
 const PlayerHand = (props) => {
-  
-    const cards = props.cards.map((card, i) => {
-      return <div key={i} onClick={() => props.onPickCard(card)}>
-               {card}
-             </div>
-    })
 
     return (
       <div>  
-        {cards}
+        {props.cards.map((card, i) => 
+          <Card key={i} value={card} onSelect={props.onPickCard}/>
+        )}
       </div>
     )
 }

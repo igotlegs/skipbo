@@ -1,0 +1,10 @@
+.player-table-cards {
+  margin: 20px;
+}
+
+.player-table-cards__stack {
+  display: inline-block;
+  border: 1px solid;
+  margin: 5px;
+  padding: 50px 40px;
+}

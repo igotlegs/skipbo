@@ -1,0 +1,11 @@
+.game-table {
+  margin: 20px;
+}
+
+.game-table__stack {
+  display: inline-block;
+  border: 1px dashed;
+  margin: 5px;
+  padding: 50px 40px; 
+}
+

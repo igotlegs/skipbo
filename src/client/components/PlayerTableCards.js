@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { noop } from '../utils'
+import Card from './Card'
+import './PlayerTableCards.css'
 
 const PlayerTableCards = (props) => {
 
@@ -17,9 +19,7 @@ const PlayerTableCards = (props) => {
               onClick = () => props.onSelectCard(stackIndex, card)
             }
             return (
-              <div key={j} onClick={onClick}>
-                {card}
-              </div>
+              <Card key={j} value={card} onSelect={onClick}/>
             )
           })
         }

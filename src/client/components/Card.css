@@ -1,0 +1,90 @@
+.card {
+  display: inline-block;
+  width: 160px;
+  border: 2px solid #f0f0f0;
+  border-radius: 10px; 
+  font-family: 'Baloo Da 2', cursive;
+  font-weight: bold;
+  box-shadow: 2px 2px 7px 0px rgba(0,0,0,0.75);
+}
+
+.card__outer-edge {
+  padding: 10px;
+  border-radius: inherit;
+  background: #ffffff;
+}
+
+.card__inner-edge {
+  box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.75);
+  border-radius: inherit;
+}
+
+.card__header {
+  display: flex;
+  justify-content: flex-start;
+  height: 50px;
+  font-size: 3rem;
+}
+
+.card__center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 110px;
+  font-size: 6rem;
+}
+
+.card__footer {
+  display: flex;
+  justify-content: flex-end;
+  height: 50px;
+  font-size: 3rem;
+}
+
+.card__value {
+  padding: 0 10px;
+  color: #ffffff;
+  word-wrap: break-word;
+  text-transform: uppercase;
+}
+
+.card__value--shadow {
+  text-shadow: 4px 2px rgba(0,0,0,0.75);
+}
+
+.card__value--upside-down {
+  transform: rotate(-180deg);
+}
+
+.card--skipbo .card__header,
+.card--skipbo .card__center,
+.card--skipbo .card__footer {
+  line-height: 1;
+}
+
+.card--skipbo .card__header .card__value,
+.card--skipbo .card__footer .card__value {
+  font-size: 2rem;
+  width: 70px;
+}
+
+.card--skipbo .card__center {
+  font-size: 4rem;
+}
+
+.card--skipbo .card__center .card__value {
+  width: 100px;
+}
+
+.card--skipbo .card__value {
+  padding: 10px;
+}
+
+.card--skipbo .card__header .card__value,
+.card--skipbo .card__center .card__value {
+  transform: rotate(-10deg);
+}
+
+.card--skipbo .card__footer .card__value {
+  transform: rotate(-190deg);
+}
