@@ -1,0 +1,14 @@
+.player-deck {
+  position: relative;
+}
+
+.player-deck__size {
+  position: absolute;
+  top: -2rem;
+  right: -2rem;
+  font-size: 2rem;
+  padding: 15px;
+  border-radius: 50%;
+  background: #46d9f0;
+  color: #ffffff;
+}

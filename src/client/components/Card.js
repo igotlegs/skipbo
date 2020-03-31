@@ -4,10 +4,20 @@ import classNames from 'classnames'
 import './Card.css'
 import { isSkipBo, noop, } from '../utils'
 
+export const CardSize = {
+  SMALL: 'SMALL',
+  REGULAR: 'REGULAR',
+  LARGE: 'LARGE',
+}
+
 const Card = (props) => {
-    const value = isSkipBo(props.value) ? 'Skip-Bo' : props.value
+    const value = isSkipBo(props.value) ? getSkipBoValue() : props.value
     const colorStyle = getCardColorStyle(props.value)
-    const className = classNames("card", {"card--skipbo": isSkipBo(props.value)})
+    const className = classNames(
+                        "card", 
+                        {"card--skipbo": isSkipBo(props.value)},
+                        `card--${props.size.toLowerCase()}`
+                      )
 
     return (
       <div className={className} onClick={()=> props.onSelect(props.value)}>
@@ -34,6 +44,13 @@ const Card = (props) => {
     )
 }
 
+function getSkipBoValue() {
+  return <div className="card__multiline">
+           <span>Skip-</span>
+           <span>Bo</span>
+         </div>
+}
+
 function getCardColorStyle(value) {
   const style = {background: ''}
 
@@ -56,10 +73,12 @@ function getCardColorStyle(value) {
 Card.propTypes = {
   value: PropTypes.number,
   onSelect: PropTypes.func,
+  size: PropTypes.oneOf([CardSize.SMALL, CardSize.REGULAR, CardSize.LARGE])
 }
 
 Card.defaultProps = {
-  onSelect: noop
+  onSelect: noop,
+  size: CardSize.REGULAR,
 }
 
 export default Card

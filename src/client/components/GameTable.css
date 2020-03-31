@@ -1,11 +1,19 @@
 .game-table {
-  margin: 20px;
+  display: flex;
 }
 
 .game-table__stack {
-  display: inline-block;
-  border: 1px dashed;
-  margin: 5px;
-  padding: 50px 40px; 
+  width: 154px;
+  height: 214px;
+  margin-right: 10px;
 }
+
+.game-table__stack--empty {
+  display: inline-block;
+  box-sizing: border-box;
+  border: 2px dashed #b0b0b0;
+  border-radius: 10px;
+}
+
+
 

@@ -1,16 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 import { noop } from '../utils'
-import Card from './Card'
+import Card, { CardSize, } from './Card'
 import './PlayerTableCards.css'
 
 const PlayerTableCards = (props) => {
 
   const cardStackElements = props.cardStacks.map((stack, stackIndex) => {
     const selectStack = () => props.onSelectCardStack(stackIndex, props.selectedCard)
+    const className = classNames(
+                        "player-table-cards__stack",
+                        {"player-table-cards__stack--empty": stack.length === 0})
     
     return (
-      <div className="player-table-cards__stack" key={stackIndex} onClick={selectStack}>
+      <div className={className} key={stackIndex} onClick={selectStack}>
         {
           stack.map((card, j) => {
             let onClick = noop
@@ -19,7 +23,11 @@ const PlayerTableCards = (props) => {
               onClick = () => props.onSelectCard(stackIndex, card)
             }
             return (
-              <Card key={j} value={card} onSelect={onClick}/>
+              <Card 
+                key={j} 
+                value={card} 
+                size={CardSize.SMALL}
+                onSelect={onClick}/>
             )
           })
         }
