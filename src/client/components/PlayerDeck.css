@@ -3,12 +3,17 @@
 }
 
 .player-deck__size {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
-  top: -2rem;
-  right: -2rem;
+  width: 5rem;
+  height: 5rem;
+  top: -2.5rem;
+  right: -2.5rem;
   font-size: 2rem;
-  padding: 15px;
   border-radius: 50%;
+  overflow: hidden;
   background: #46d9f0;
   color: #ffffff;
 }

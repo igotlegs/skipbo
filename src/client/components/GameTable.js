@@ -8,18 +8,21 @@ const GameTable = (props) => {
 
   const cardStackElements = props.cardStacks.map((stack, i) => {
     const selectStack = () => props.onSelectCardStack(i, props.selectedCard)
-      const className = classNames(
-                        "game-table__stack",
-                        {"game-table__stack--empty": stack.length === 0})
+    const className = classNames(
+                      "game-table__stack",
+                      {"game-table__stack--empty": stack.length === 0})
 
     return (
       <div className={className} key={i} onClick={selectStack}>
         {
           stack.map((card, j) => {
-            return <Card 
-                      key={j} 
-                      value={card}
-                      size={CardSize.LARGE}/>
+            if(j === stack.length - 1) {
+              return <Card 
+                        key={j} 
+                        value={card}
+                        size={CardSize.LARGE}/>
+            }
+            return null
           })
         }
       </div>
