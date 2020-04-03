@@ -24,7 +24,7 @@ export default function App(props) {
                 <GameTable/>
               </div>
               <div className="app__my-player-area">
-               <div className="app__player-hand">
+                <div className="app__player-hand">
                   <PlayerHand/>
                 </div>
                 <div className="app__player-deck">

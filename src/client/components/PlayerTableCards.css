@@ -3,14 +3,21 @@
 }
 
 .player-table-cards__stack {
+  width: 120px;
+  height: 220px;
   margin-right: 10px;
+  border-radius: 10px;
+  background: #bdbdbd;
 }
 
 .player-table-cards__stack-cards {
   position: relative;
-  width: 124px;
+  height: 800px; /* TODO: should be calculated */
+}
+
+.player-table-cards__stack-scroll {
   height: 220px;
-  padding: 10px;
-  overflow: hidden;
+  padding: 5px;
+  overflow: auto;
 }
 

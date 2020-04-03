@@ -10,6 +10,7 @@ const mapStateToProps = (state, ownProps) => {
 	return {
 		selectedCard: state.selectedCard.get('card'),
 		cardStacks: state.myTableCards.get('stacks').toJS(),
+    acceptCards: state.selectedCard.get('origin') === CardOrigin.PLAYER_HAND,
 	}
 }
 

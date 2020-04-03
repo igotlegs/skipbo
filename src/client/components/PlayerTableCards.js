@@ -1,27 +1,23 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { IconButton, } from '@chakra-ui/core'
-import { noop } from '../utils'
+import { noop, } from '../utils'
 import Card, { CardSize, } from './Card'
 import './PlayerTableCards.css'
 
 const PlayerTableCards = (props) => {
 
   const cardStackElements = props.cardStacks.map((stack, stackIndex) => {
-    const selectStack = () => props.onSelectCardStack(stackIndex, props.selectedCard)
+    let selectStack = noop
+    let onSelectCard = props.onSelectCard
+
+    if(props.acceptCards) {
+      selectStack = () => props.onSelectCardStack(stackIndex, props.selectedCard)
+      onSelectCard = noop
+    }
 
     return (
-      <div className="player-table-cards__stack" key={stackIndex}>
-        <div className="player-table-cards__stack-controls">
-          <IconButton 
-            className="player-table-cards__stack-add" 
-            icon="add" 
-            onClick={selectStack}/>
-          <span className="player-table-cards__stack-count">{stack.length}</span>
-        </div>
-        <div className="player-table-cards__stack-cards">
-          {renderStack(stack, stackIndex, props.onSelectCard)}
-        </div>
+      <div className="player-table-cards__stack" key={stackIndex} onClick={selectStack}>
+        {renderStackContent(stack, stackIndex, onSelectCard)}
       </div>
     )
   })
@@ -33,21 +29,21 @@ const PlayerTableCards = (props) => {
   )
 }
 
-function renderStack(stack, stackIndex, onSelectCard) {
+function renderStackContent(stack, stackIndex, onSelectCard) {
   const initialOffset = 7
   const showCardBelowByPx = 35
   let offset = getMaxOffset(stack.length, initialOffset, showCardBelowByPx)
 
-  return stack.map((card, i) => {
+  const cardsInStack = stack.map((card, i) => {
     let onClick = noop
-    const style = {
+    const cardOverlayStyle = {
       position: 'absolute',
     }
     
     if(isTopCard(i, stack)) {
-      style.bottom = `${initialOffset}px`
+      cardOverlayStyle.bottom = `${initialOffset}px`
     } else {
-      style.bottom = `${offset}px`
+      cardOverlayStyle.bottom = `${offset}px`
       offset -= showCardBelowByPx
     }
 
@@ -55,14 +51,38 @@ function renderStack(stack, stackIndex, onSelectCard) {
       onClick = () => onSelectCard(stackIndex, card)
     }
     return (
-      <div key={i} style={style}>
+      <div key={i} style={cardOverlayStyle}>
         <Card 
           value={card} 
           size={CardSize.SMALL}
           onSelect={onClick}/>
       </div>
     )
-  })          
+  })   
+
+  return <CardsInStack cards={cardsInStack}/>
+}
+
+class CardsInStack extends React.Component {
+  
+  constructor(props) {
+    super(props)
+    this.scrollEl = React.createRef()
+  }
+
+  componentDidUpdate() {
+    this.scrollEl.current.scrollTop = this.scrollEl.current.scrollHeight
+  }
+
+  render() {
+    return (
+      <div ref={this.scrollEl} className="player-table-cards__stack-scroll">
+        <div className="player-table-cards__stack-cards">
+          {this.props.cards}
+        </div>
+      </div>
+    )
+  }
 }
 
 function isTopCard(index, stack) {
@@ -93,6 +113,11 @@ PlayerTableCards.propTypes = {
   cardStacks: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
   onSelectCardStack: PropTypes.func.isRequired,
   onSelectCard: PropTypes.func.isRequired,
+  acceptCards: PropTypes.bool,
+}
+
+PlayerTableCards.defaultProps = {
+  acceptCards: true,
 }
 
 export default PlayerTableCards
