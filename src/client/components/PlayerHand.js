@@ -46,7 +46,7 @@ function renderCards(cards, onPickCard) {
 }
 
 PlayerHand.propTypes = {
-  onPickCard: PropTypes.func.isRequired
+  onPickCard: PropTypes.func.isRequired,
 }
 
 export default PlayerHand

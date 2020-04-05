@@ -18,7 +18,7 @@ const GameTable = (props) => {
         {
           stack.map((card, j) => {
             if(j < stack.length - 1) return null
-              
+
             if(isSkipBo(card) && stack.length > 1) {
               const previousIndex = j - 1
               const previousCard = stack[previousIndex]
@@ -28,15 +28,13 @@ const GameTable = (props) => {
               }
 
               return [
-                <div>
+                <div key={previousIndex}>
                   <Card 
-                    key={previousIndex}
                     value={previousCard}
                     size={CardSize.LARGE}/>
                 </div>,
-                <div style={showPreviousCardStyle}>
+                <div key={j} style={showPreviousCardStyle}>
                   <Card 
-                    key={j}
                     value={card}
                     size={CardSize.LARGE}/>
                 </div>
