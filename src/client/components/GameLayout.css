@@ -1,0 +1,40 @@
+.game-layout {
+  display: flex;
+}
+
+.game-layout__column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 50vw;
+  min-height: 100%;
+  padding: 20px;
+}
+
+.game-layout__column:first-child {
+  border-right: 2px solid #b0b0b0;
+}
+
+.game-layout__other-player-area {}
+
+.game-layout__game-table,
+.game-layout__my-player-area {
+  min-width: 100%;
+}
+
+.game-layout__my-player-area {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.game-layout__player-deck {
+  min-width: 20%;
+}
+
+.game-layout__player-hand {
+  min-width: 80%;
+}
+
+.game-layout__player-table-cards {
+  width: 100%;
+}

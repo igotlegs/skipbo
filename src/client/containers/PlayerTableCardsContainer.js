@@ -3,7 +3,7 @@ import PlayerTableCards from '../components/PlayerTableCards'
 import { 
   addCardToPlayerTableCards, 
   selectCard, 
-} from '../actions/GameActions'
+} from '../actions/GamePlayActions'
 import CardOrigin from '../constants/CardOrigin'
 
 const mapStateToProps = (state, ownProps) => {

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { selectCard } from '../actions/GameActions'
+import { selectCard } from '../actions/GamePlayActions'
 import PlayerHand from '../components/PlayerHand'
 import CardOrigin from '../constants/CardOrigin'
 

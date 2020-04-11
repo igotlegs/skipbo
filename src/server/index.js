@@ -1,12 +1,18 @@
 const express = require('express')
+const responseFormatter = require('express-response-formatter').default
+const setupEndpoints = require('./setup-endpoints')
+const setupEnvironment = require('./setup-environment')
+
 const app = express()
 const port = 3001
 
-app.get('/deck', (req, res) => {
-  res.json({
-    size: 25,
-    topMostCard: 4,
-  })
-})
+app.use(responseFormatter())
+app.use(express.json())
 
-app.listen(port, () => console.log(`Game server started, port: ${port}`))
+setupEnvironment(app)
+setupEndpoints(app)
+
+app.listen(port, () => {
+  const startMsg = `Game server started, port: ${port} \nReady to play?`
+  console.log(startMsg)
+})

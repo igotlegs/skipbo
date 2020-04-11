@@ -1,0 +1,15 @@
+.lobby {
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+.lobby__new-game {
+  padding: 35px;
+}
+
+.lobby__start-game {
+  margin-top: 20px;
+}

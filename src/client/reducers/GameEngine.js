@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux'
 import { fromJS } from 'immutable'
 import { 
   ADD_CARD_TO_GAME_TABLE,
@@ -45,14 +44,7 @@ const myTableCardsInitialState = fromJS({
 
 const myHandInitialState = fromJS([1, 2, 11, 7, 0])
 
-function players(state = fromJS({}), action) {
-  switch(action.type) {
-    default: 
-      return state
-  }
-}
-
-function gameTable(state = gameTableInitialState, action) {
+export function gameTable(state = gameTableInitialState, action) {
   switch(action.type) {
     case ADD_CARD_TO_GAME_TABLE:
       const stack = state.getIn(['stacks', action.stack])
@@ -94,14 +86,14 @@ function gameTable(state = gameTableInitialState, action) {
   }
 }
 
-function myDeck(state = myDeckInitialState, action) {
+export function myDeck(state = myDeckInitialState, action) {
   switch(action.type) {
     default: 
       return state
   }
 }
 
-function myHand(state = myHandInitialState, action) {
+export function myHand(state = myHandInitialState, action) {
   switch(action.type) {
     case REMOVE_CARD_FROM_PLAYER_HAND:
       return state.remove(state.indexOf(action.card))
@@ -111,7 +103,7 @@ function myHand(state = myHandInitialState, action) {
   }
 }
 
-function myTableCards(state = myTableCardsInitialState, action) {
+export function myTableCards(state = myTableCardsInitialState, action) {
   switch(action.type) {
     case ADD_CARD_TO_PLAYER_TABLE_CARDS:
       return state.updateIn(
@@ -133,7 +125,7 @@ function myTableCards(state = myTableCardsInitialState, action) {
   }
 }
 
-function selectedCard(state = selectedCardInitialState, action) {
+export function selectedCard(state = selectedCardInitialState, action) {
   switch(action.type) {
     case SELECT_CARD:
       return state.merge({
@@ -152,14 +144,3 @@ function selectedCard(state = selectedCardInitialState, action) {
       return state
   }
 }
-
-const GameEngine = combineReducers({
-  selectedCard, // never sync
-  gameTable, // will be synced
-  myDeck, // never sync
-  myHand, // never sync
-  myTableCards, // will be synced
-  players,
-})
-
-export default GameEngine

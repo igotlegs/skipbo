@@ -3,8 +3,12 @@ import ReactDOM from 'react-dom'
 import { createStore, applyMiddleware, compose, } from 'redux' 
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
-import GameEngine from './reducers/GameEngine'
-import App from './components/App'
+import { ThemeProvider } from '@material-ui/core/styles'
+import reducers from './reducers'
+import App from './containers/AppContainer'
+import theme from './theme'
+
+import './reset.css'
 import './index.css'
 
 const reduxDevTools = window.__REDUX_DEVTOOLS_EXTENSION__ ? 
@@ -12,7 +16,7 @@ const reduxDevTools = window.__REDUX_DEVTOOLS_EXTENSION__ ?
   compose
 
 const store = createStore(
-  GameEngine,
+  reducers,
   compose(
     applyMiddleware(thunk),
     reduxDevTools,
@@ -27,7 +31,9 @@ if(module.hot) {
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
   </Provider>, 
   document.getElementById('root')
 )
