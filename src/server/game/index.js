@@ -24,7 +24,10 @@ function create(playerCount) {
     players,
   }
 
-  return id
+  return {
+    id,
+    playerCount,
+  }
 }
 
 module.exports = {

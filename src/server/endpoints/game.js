@@ -22,8 +22,8 @@ function game() {
       return
     } 
 
-    const id = Game.create(playerCount)
-    res.formatter.ok({gameId: id})
+    const game = Game.create(playerCount)
+    res.formatter.ok(game)
   })
 
   return router

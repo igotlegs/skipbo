@@ -5,6 +5,7 @@ import Lobby from '../components/Lobby'
 const mapStateToProps = (state, ownProps) => {
   return {
     gameId: state.game.get('id'),
+    playerCount: state.game.get('playerCount'),
   }
 }
 

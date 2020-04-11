@@ -7,7 +7,7 @@ export const createNewGame = (playerCount) => {
       .then((data) => {
         dispatch({
           type: CREATE_GAME,
-          id: data.gameId,
+          ...data,
         })
       })
       .catch((e) => {

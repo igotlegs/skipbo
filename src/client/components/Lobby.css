@@ -6,10 +6,67 @@
   font-size: 1.5rem;
 }
 
-.lobby__new-game {
-  padding: 35px;
+.lobby__players {
+  display: flex;
+  justify-content: center;
+  height: 44px;
+}
+
+.lobby__player-count {
+  line-height: 44px;
+}
+
+.lobby__player-count-controls {
+  background: #f3f0f0;
+  border-radius: 10px;
+  margin-left: 15px;
+}
+
+.lobby__player-remove {
+  margin-right: 10px !important;
+}
+
+.lobby__content {
+  width: 500px;
+  padding: 35px 40px;
 }
 
 .lobby__start-game {
-  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
 }
+
+.lobby__share-info {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.lobby__share {
+  margin-bottom: 20px;
+}
+
+.lobby__join {
+  margin-bottom: 40px;
+}
+
+.lobby__joined-players {
+  display: block;
+  margin-bottom: 10px;
+  color: #a2a2a2;
+}
+
+.lobby__player {
+  display: flex;
+  justify-content: space-between;
+}
+
+.lobby__player-name {
+  width: 300px !important;
+}
+
+.lobby__start-game-btn {
+  display: flex;
+  justify-content: center;
+}
+

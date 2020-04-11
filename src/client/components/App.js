@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import GameLayout from './GameLayout'
 import Lobby from '../containers/LobbyContainer'
 import GameStage from '../constants/GameStage'
@@ -22,5 +23,16 @@ function renderContent(gameStage) {
 
     case GameStage.IN_PROGRESS:
       return <GameLayout/>
+
+    default:
+      throw new Error(`Unkown game stage ${gameStage}`)
   }
+}
+
+App.propTypes = {
+  gameStage: PropTypes.oneOf(Object.values(GameStage))
+}
+
+App.defaultProps = {
+  gameStage: GameStage.INIT,
 }
