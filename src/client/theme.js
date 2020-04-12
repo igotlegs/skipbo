@@ -1,14 +1,15 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 import purple from '@material-ui/core/colors/purple'
-import green from '@material-ui/core/colors/green'
+import pink from '@material-ui/core/colors/pink'
+import deepOrange from '@material-ui/core/colors/deepOrange'
 
 const theme = createMuiTheme({
   palette: {
     primary: purple,
-    secondary: green,
+    secondary: pink,
   },
   status: {
-    danger: 'orange',
+    danger: deepOrange[800],
   },
   typography: {
     fontSize: 18,

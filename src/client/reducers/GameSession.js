@@ -1,5 +1,5 @@
 import { fromJS } from 'immutable'
-import { CREATE_GAME, SETUP_GAME, } from '../constants/ActionTypes'
+import { CREATE_GAME, SETUP_GAME, NEW_PLAYER, } from '../constants/ActionTypes'
 import GameStage from '../constants/GameStage'
 
 const gameInitialState = fromJS({
@@ -19,6 +19,15 @@ export function game(state = gameInitialState, action) {
 
     case SETUP_GAME: 
       return state.set('stage', GameStage.IN_PROGRESS) // todo: should be PRE_GAME
+
+    case NEW_PLAYER:
+      const players = {}
+      players[action.id] = {
+        id: action.id,
+        name: action.name,
+        deckTopMostCard: action.deckTopMostCard,
+      }
+      return state.mergeDeep({players})
 
     default: 
       return state

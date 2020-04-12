@@ -1,3 +1,4 @@
 module.exports = [
-  require('./game')
+  require('./game'),
+  require('./player'),
 ]

@@ -1,29 +1,25 @@
 const express = require('express')
-const getBody = require('./get-body')
-const Game = require('../game')
+const Game = require('../game/game')
+const GameRegistry = require('../game/registry')
 
-const ERR_PLAYER_COUNT = 'playerCount must be an integer and range from 2 to 4.'
+const ERR_CREATE_GAME = 'ERR_CREATE_GAME'
 
 function game() {
   const router = express.Router()
   
   router.post('/game', (req, res) => {
-    const body = getBody(req)
+    try {
+      const game = new Game(req.body.playerCount)
+      GameRegistry.add(game)
 
-    if(!body) {
-      res.formatter.badRequest([ERR_PLAYER_COUNT])
-      return
+      res.formatter.ok({
+        id: game.getId(),
+        playerCount: game.getPlayerCount(),
+      })
+    } catch(e) {
+      console.log(e)
+      res.formatter.badRequest([ERR_CREATE_GAME])
     }
-
-    const playerCount = body.playerCount
-
-    if(!Number.isInteger(playerCount) || (playerCount < 2 || playerCount > 4)) {
-      res.formatter.badRequest([ERR_PLAYER_COUNT])
-      return
-    } 
-
-    const game = Game.create(playerCount)
-    res.formatter.ok(game)
   })
 
   return router

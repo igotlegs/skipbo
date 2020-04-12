@@ -10,3 +10,4 @@ export const REMOVE_CARD_FROM_PLAYER_HAND = 'REMOVE_CARD_FROM_PLAYER_HAND'
 // Game session
 export const CREATE_GAME = 'CREATE_GAME'
 export const SETUP_GAME = 'SETUP_GAME'
+export const NEW_PLAYER = 'NEW_PLAYER'

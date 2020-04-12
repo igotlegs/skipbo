@@ -68,6 +68,8 @@ function InitGame(props) {
 }
 
 function JoinGame(props) {
+  const [playerName, setPlayerName] = React.useState('')
+  const onPlayerNameChange = (event) => setPlayerName(event.target.value) 
   const shareProps = {
     "readOnly": true,
   }
@@ -95,10 +97,15 @@ function JoinGame(props) {
             className="lobby__player-name"
             label="Pelaajan nimi" 
             size="small"
-            variant="outlined" />
+            variant="outlined"
+            value={playerName}
+            onChange={onPlayerNameChange} />
           <Button 
-            variant="contained"
-            startIcon={<PersonAdd/>}>
+            variant="outlined"
+            color="secondary"
+            startIcon={<PersonAdd/>}
+            onClick={() => props.onAddPlayer(playerName)}
+            disabled={playerName.length < 3}>
               Lisää
           </Button>
         </div>
@@ -120,6 +127,7 @@ Lobby.propTypes = {
   playerCount: PropTypes.number,
   onNewGame: PropTypes.func.isRequired,
   onStartGame: PropTypes.func.isRequired,
+  onAddPlayer: PropTypes.func.isRequired,
 }
 
 Lobby.defaultProps = {

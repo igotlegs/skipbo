@@ -1,5 +1,4 @@
 import React from 'react'
-import Divider from '@material-ui/core/Divider'
 import PlayerHand from '../containers/PlayerHandContainer'
 import GameTable from '../containers/GameTableContainer'
 import PlayerDeck from '../containers/PlayerDeckContainer'
@@ -12,7 +11,6 @@ const GameLayout = () => {
       <div className="game-layout__column">
         <div className="game-layout__other-player-area"/>
       </div>
-      <Divider orientation="vertical" />
       <div className="game-layout__column">
         <div className="game-layout__game-table">
           <GameTable/>

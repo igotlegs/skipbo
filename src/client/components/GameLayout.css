@@ -12,10 +12,8 @@
 }
 
 .game-layout__column:first-child {
-  border-right: 2px solid #b0b0b0;
+  border-right: 2px solid #b9b9b9;
 }
-
-.game-layout__other-player-area {}
 
 .game-layout__game-table,
 .game-layout__my-player-area {
