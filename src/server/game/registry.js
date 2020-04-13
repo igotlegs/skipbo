@@ -1,7 +1,6 @@
 const gameRegistry = {}
 
 function add(game) { 
-  console.log(gameRegistry)
   const id = game.getId()
 
   if(findById(id) !== null) {

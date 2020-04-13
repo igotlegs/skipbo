@@ -24,6 +24,7 @@ function player() {
         id: player.getId(),
         name: player.getName(),
         deckTopMostCard: player.getTopMostCardFromDeck(),
+        deckSize: player.getDeckSize(),
       })
     } catch(e) {
       console.log(e)

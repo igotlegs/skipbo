@@ -6,8 +6,7 @@ const gameInitialState = fromJS({
   id: null,
   stage: GameStage.INIT,
   playerCount: 0,
-  players: {},
-})
+}) 
 
 export function game(state = gameInitialState, action) {
   switch(action.type) {
@@ -20,16 +19,27 @@ export function game(state = gameInitialState, action) {
     case SETUP_GAME: 
       return state.set('stage', GameStage.IN_PROGRESS) // todo: should be PRE_GAME
 
+    default: 
+      return state
+  }
+}
+
+export function players(state = fromJS({}), action) {
+  switch(action.type) {
     case NEW_PLAYER:
       const players = {}
       players[action.id] = {
         id: action.id,
         name: action.name,
         deckTopMostCard: action.deckTopMostCard,
+        deckSize: action.deckSize,
       }
-      return state.mergeDeep({players})
+      return state.merge({...players})
 
     default: 
       return state
   }
 }
+
+
+ 

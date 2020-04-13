@@ -46,6 +46,10 @@ class Player {
     return [].concat(this._deck)
   }
 
+  getDeckSize() {
+    return this._deck.length
+  }
+
   addCardsToHand(cards) {
     if(Array.isArray(cards) && cards.length > 0) {
       if(this._hand.length + cards.length === Player.PLAYER_HAND_SIZE) {
