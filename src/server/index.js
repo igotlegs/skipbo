@@ -1,7 +1,7 @@
-const express = require('express')
-const responseFormatter = require('express-response-formatter').default
-const setupEndpoints = require('./setup-endpoints')
-const setupEnvironment = require('./setup-environment')
+import express from 'express'
+import responseFormatter from 'express-response-formatter'
+import setupEnvironment from './setup-endpoints'
+import setupEnvironment from './setup-environment'
 
 const app = express()
 const port = 3001

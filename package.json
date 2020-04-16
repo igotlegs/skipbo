@@ -8,6 +8,9 @@
   "private": true,
   "proxy": "http://localhost:3001/",
   "dependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
     "@material-ui/core": "^4.9.9",
     "@material-ui/icons": "^4.9.1",
     "@testing-library/jest-dom": "^4.2.4",
@@ -22,6 +25,7 @@
     "helmet": "^3.22.0",
     "immutable": "^4.0.0-rc.12",
     "morgan": "^1.10.0",
+    "nodemon": "^2.0.3",
     "prop-types": "^15.7.2",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
@@ -32,11 +36,12 @@
     "shortid": "^2.2.15"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start-frontend": "react-scripts start",
+    "build-frontend": "react-scripts build",
+    "test-frontend": "react-scripts test",
     "eject": "react-scripts eject",
-    "start-server": "node ./src/server"
+    "build-server": "babel ./src/server -d ./build",
+    "run-server": "yarn run build-server && nodemon ./build/index.js"
   },
   "eslintConfig": {
     "extends": "react-app"
