@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { noop, } from '../utils'
-import Card, { CardSize, } from './Card'
+import Card, { CardSize, CardValuePropType, } from './Card'
 import './PlayerTableCards.css'
 
 const PlayerTableCards = (props) => {
@@ -11,7 +11,11 @@ const PlayerTableCards = (props) => {
     let onSelectCard = props.onSelectCard
 
     if(props.acceptCards) {
-      selectStack = () => props.onSelectCardStack(stackIndex, props.selectedCard)
+      selectStack = () => {
+        if(props.selectedCard) {
+          props.onSelectCardStack(stackIndex, props.selectedCard)
+        }
+      }
       onSelectCard = noop
     }
 
@@ -109,7 +113,7 @@ function getMaxOffset(numOfCards, initialOffset, showCardBelowByPx) {
 }
 
 PlayerTableCards.propTypes = {
-  selectedCard: PropTypes.number,
+  selectedCard: CardValuePropType,
   cardStacks: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
   onSelectCardStack: PropTypes.func.isRequired,
   onSelectCard: PropTypes.func.isRequired,
@@ -118,6 +122,8 @@ PlayerTableCards.propTypes = {
 
 PlayerTableCards.defaultProps = {
   acceptCards: true,
+  cardStacks: [],
+  selectedCard: null,
 }
 
 export default PlayerTableCards

@@ -12,10 +12,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onSelectCardStack: (stack, card) => {
-    	if(Number.isInteger(card)) {
-      	dispatch(addCardToGameTable(stack, card))	
-    	}
-    }
+      	dispatch(addCardToGameTable(stack, card))
+    },
   }
 }
 

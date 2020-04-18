@@ -1,7 +1,8 @@
-const express = require('express')
-const helmet = require('helmet')
-const compression = require('compression')
-const morgan = require('morgan')
+import express from 'express'
+import session from 'express-session'
+import helmet from 'helmet'
+import compression from 'compression'
+import morgan from 'morgan'
 
 function setupEnvironment(app) {
   if(isProd()) {
@@ -11,6 +12,7 @@ function setupEnvironment(app) {
   }
   
   setupLogging(app)
+  setupSessionHandling(app)
 }
 
 function setupLogging(app) {
@@ -18,8 +20,21 @@ function setupLogging(app) {
   app.use(morgan(logLevel))
 }
 
+function setupSessionHandling(app) {
+  if(isProd()) {
+    console.log('prod session not implemented!')
+    return 
+  }
+
+  app.use(session({
+    secret: 'super weasel',
+    resave: false,
+    saveUninitialized: false,
+  }))
+}
+
 function isProd() {
   return process.env.NODE_ENV === 'production'
 }
 
-module.exports = setupEnvironment
+export default setupEnvironment

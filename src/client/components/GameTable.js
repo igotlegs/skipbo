@@ -2,16 +2,21 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { isSkipBo, } from '../utils'
-import Card, { CardSize, } from './Card'
+import Card, { CardSize, CardValuePropType, } from './Card'
 import './GameTable.css'
 
 const GameTable = (props) => {
 
   const cardStackElements = props.cardStacks.map((stack, i) => {
-    const selectStack = () => props.onSelectCardStack(i, props.selectedCard)
     const className = classNames(
                       "game-table__stack",
                       {"game-table__stack--empty": stack.length === 0})
+
+    const selectStack = () => {
+      if(props.selectedCard) {
+        props.onSelectCardStack(i, props.selectedCard)
+      }
+    }
 
     return (
       <div className={className} key={i} onClick={selectStack}>
@@ -59,9 +64,14 @@ const GameTable = (props) => {
 }
 
 GameTable.propTypes = {
-  selectedCard: PropTypes.number,
-  cardStacks: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
+  selectedCard: CardValuePropType,
+  cardStacks: PropTypes.arrayOf(PropTypes.arrayOf(CardValuePropType)),
   onSelectCardStack: PropTypes.func.isRequired,
+}
+
+GameTable.defaultProps = {
+  cardStacks: [],
+  selectedCard: null,
 }
 
 export default GameTable

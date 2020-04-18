@@ -10,6 +10,7 @@ import {
   IndeterminateCheckBox, 
   PersonAdd,
 } from '@material-ui/icons'
+import GameRules from '../../shared/game-rules'
 import './Lobby.css'
 
 const Lobby = (props) => {
@@ -27,9 +28,15 @@ const Lobby = (props) => {
 }
 
 function InitGame(props) {
-  const [playerCount, setCount] = React.useState(2)
-  const addPlayer = () => playerCount < 4 && setCount(playerCount + 1)
-  const removePlayer = () => playerCount > 2 && setCount(playerCount - 1)
+  const [playerCount, setCount] = React.useState(GameRules.MIN_PLAYERS)
+  const addPlayer = () => {
+    return playerCount < GameRules.MAX_PLAYERS && 
+           setCount(playerCount + 1)
+  }
+  const removePlayer = () => {
+    return playerCount > GameRules.MIN_PLAYERS && 
+           setCount(playerCount - 1)
+  }
 
   return (
     <div className="lobby__content">
@@ -43,14 +50,14 @@ function InitGame(props) {
             aria-label="Vähemmän pelaajia"
             variant="outlined"
             onClick={removePlayer}
-            disabled={playerCount === 2}>
+            disabled={playerCount === GameRules.MIN_PLAYERS}>
               <IndeterminateCheckBox/>
           </IconButton>
           <IconButton 
             aria-label="Enemmän pelaajia" 
             variant="outlined"
             onClick={addPlayer}
-            disabled={playerCount === 4}>
+            disabled={playerCount === GameRules.MAX_PLAYERS}>
               <AddBox/>
           </IconButton>
         </div>
@@ -69,9 +76,15 @@ function InitGame(props) {
 
 function JoinGame(props) {
   const [playerName, setPlayerName] = React.useState('')
-  const onPlayerNameChange = (event) => setPlayerName(event.target.value) 
+  const onPlayerNameChange = (event) => setPlayerName(event.target.value)
   const shareProps = {
     "readOnly": true,
+  }
+  
+  const addPlayerOnEnter = (event) => {
+    if(event.key === 'Enter' && playerName.length >= GameRules.MIN_PLAYER_NAME_LENGTH) {
+      props.onAddPlayer(playerName)
+    }
   }
 
   return (
@@ -99,13 +112,14 @@ function JoinGame(props) {
             size="small"
             variant="outlined"
             value={playerName}
-            onChange={onPlayerNameChange} />
+            onChange={onPlayerNameChange}
+            onKeyDown={addPlayerOnEnter} />
           <Button 
             variant="outlined"
             color="secondary"
             startIcon={<PersonAdd/>}
             onClick={() => props.onAddPlayer(playerName)}
-            disabled={playerName.length < 3}>
+            disabled={playerName.length < GameRules.MIN_PLAYER_NAME_LENGTH}>
               Lisää
           </Button>
         </div>
@@ -132,7 +146,7 @@ Lobby.propTypes = {
 
 Lobby.defaultProps = {
   gameId: null,
-  playerCount: 2,
+  playerCount: GameRules.MIN_PLAYERS,
 }
 
 export default Lobby

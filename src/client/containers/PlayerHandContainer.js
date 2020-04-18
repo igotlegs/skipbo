@@ -13,7 +13,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onPickCard: (card) => {
       dispatch(selectCard(card, CardOrigin.PLAYER_HAND))
-    }
+    },
   }
 }
 

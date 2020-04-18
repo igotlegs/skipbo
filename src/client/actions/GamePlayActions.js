@@ -1,3 +1,4 @@
+import API from '../api/Api'
 import { 
 	ADD_CARD_TO_GAME_TABLE,
 	SELECT_CARD,
@@ -6,6 +7,7 @@ import {
 	REMOVE_CARD_FROM_PLAYER_TABLE_STACK,
 	SET_PLAYER_TABLE_CARDS_VIOLATION,
 	REMOVE_CARD_FROM_PLAYER_HAND,
+	ADD_CARDS_TO_MY_HAND,
 } from '../constants/ActionTypes'
 import CardOrigin from '../constants/CardOrigin'
 
@@ -47,10 +49,13 @@ export const clearSelectedCard = () => ({
 export const addCardToPlayerTableCards = (stack, card) => {
 	return (dispatch, getState) => {
 		if(getState().selectedCard.get('origin') === CardOrigin.PLAYER_HAND) {
+			const playerId = getState().players.get('myIdentity')
+
 			dispatch({
 				type: ADD_CARD_TO_PLAYER_TABLE_CARDS,
 				stack,
 				card,
+				playerId,
 			})
 
 			dispatch(removeCardFromPlayerHand(card))
@@ -61,10 +66,17 @@ export const addCardToPlayerTableCards = (stack, card) => {
 	}
 }
 
-export const popCardFromPlayerTableStack = (stack) => ({
-	type: REMOVE_CARD_FROM_PLAYER_TABLE_STACK,
-	stack,
-})
+export const popCardFromPlayerTableStack = (stack) => {
+	return (dispatch, getState) => {
+		const playerId = getState().players.get('myIdentity')
+		
+		dispatch({
+			type: REMOVE_CARD_FROM_PLAYER_TABLE_STACK,
+			stack,
+			playerId,
+		})
+	}
+}
 
 export const setCanNotMoveCardToPlayerTableCards = () => ({
 	type: SET_PLAYER_TABLE_CARDS_VIOLATION,
@@ -74,3 +86,20 @@ export const removeCardFromPlayerHand = (card) => ({
 	type: REMOVE_CARD_FROM_PLAYER_HAND,
 	card
 }) 
+
+export const addCardsToMyHand = (cards) => ({
+	type: ADD_CARDS_TO_MY_HAND,
+	cards,
+})
+
+export const dealCardsToMyHand = (numOfCards) => {
+	return (dispatch) => {
+		API.dealCards(numOfCards)
+      .then((data) => {
+        dispatch(addCardsToMyHand(data.cards))
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+	}
+}

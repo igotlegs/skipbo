@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { createNewGame, setupGame, joinGame, } from '../actions/GameActions'
+import { createNewGame, startGame, joinGame, } from '../actions/GameActions'
 import Lobby from '../components/Lobby'
 
 const mapStateToProps = (state, ownProps) => {
@@ -15,11 +15,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(createNewGame(playerCount))
     },
     onStartGame: () => {
-      dispatch(setupGame())
+      dispatch(startGame())
     },
     onAddPlayer: (playerName) => {
       dispatch(joinGame(playerName))
-    }
+    },
   }
 }
 

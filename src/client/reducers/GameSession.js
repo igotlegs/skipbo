@@ -1,5 +1,11 @@
 import { fromJS } from 'immutable'
-import { CREATE_GAME, SETUP_GAME, NEW_PLAYER, } from '../constants/ActionTypes'
+import { 
+  CREATE_GAME, 
+  START_GAME,
+  SETUP_GAME, 
+  NEW_PLAYER, 
+  SET_PLAYER_IDENTITY,
+} from '../constants/ActionTypes'
 import GameStage from '../constants/GameStage'
 
 const gameInitialState = fromJS({
@@ -7,6 +13,11 @@ const gameInitialState = fromJS({
   stage: GameStage.INIT,
   playerCount: 0,
 }) 
+
+const playersInitialState = fromJS({
+  entities: {},
+  myIdentity: null,
+})
 
 export function game(state = gameInitialState, action) {
   switch(action.type) {
@@ -17,24 +28,33 @@ export function game(state = gameInitialState, action) {
       })
 
     case SETUP_GAME: 
-      return state.set('stage', GameStage.IN_PROGRESS) // todo: should be PRE_GAME
+      return state.set('stage', GameStage.PRE_GAME)
+
+    case START_GAME: 
+      return state.set('stage', GameStage.IN_PROGRESS)
 
     default: 
       return state
   }
 }
 
-export function players(state = fromJS({}), action) {
+export function players(state = playersInitialState, action) {
   switch(action.type) {
     case NEW_PLAYER:
-      const players = {}
-      players[action.id] = {
+      const players = {
+        entities: {}
+      }
+      players.entities[action.id] = {
         id: action.id,
         name: action.name,
-        deckTopMostCard: action.deckTopMostCard,
-        deckSize: action.deckSize,
       }
-      return state.merge({...players})
+      return state.mergeDeep(players)
+
+    case SET_PLAYER_IDENTITY: 
+      if(state.get('myIdentity')) {
+        return state
+      }
+      return state.set('myIdentity', action.id)
 
     default: 
       return state

@@ -2,7 +2,9 @@ import axios from 'axios'
 
 export const API_ENDPOINTS = {
   GAME: '/game',
+  GAME_DECK: '/game/deck',
   PLAYER: '/player',
+  PLAYER_HAND: '/player/my-hand',
 }
 
 const client = axios.create({
@@ -17,6 +19,9 @@ const API = {
   },
   addPlayerToGame: (playerName, gameId) => {
     return client.post(API_ENDPOINTS.PLAYER, {playerName, gameId})
+  },
+  dealCards: (numOfCards) => {
+    return client.put(API_ENDPOINTS.GAME_DECK, {numOfCards})
   },
   getClient: () => client
 }

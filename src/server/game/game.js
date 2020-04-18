@@ -1,25 +1,18 @@
-const shortid = require('shortid')
-const deck = require('./deck')
+import shortid from 'shortid'
+import Deck from './deck'
+import GameRules from '../../shared/GameRules'
 
 class Game {
   constructor(playerCount) {
     this._id = shortid.generate()
     this._playerCount = this._checkPlayerCount(playerCount)
-    this._deck = deck.shuffle(deck.generate())
+    this._deck = Deck.shuffle(Deck.generate())
     this._players = {}
   }  
 
-  static get MIN_PLAYERS() {
-    return 2
-  }
-
-  static get MAX_PLAYERS() {
-    return 4
-  }
-
   _checkPlayerCount(playerCount) {
     if(Number.isInteger(playerCount) && 
-      playerCount >= Game.MIN_PLAYERS && playerCount <= Game.MAX_PLAYERS) {
+      playerCount >= GameRules.MIN_PLAYERS && playerCount <= GameRules.MAX_PLAYERS) {
       return playerCount
     }
     throw new Error(`playerCount must be an integer and range from 2 to 4! Got: ${playerCount}`)
@@ -38,13 +31,19 @@ class Game {
     this._players[id] = player
   }
 
+  getPlayer(id) {
+    return this._players[id] ?
+      this._players[id] :
+      null
+  }
+
   getPlayerCount() {
     return this._playerCount
   }
 
   dealFromGameDeck(numOfCards) {
-    if(numOfCards < 1) {
-      throw new Error(`numOfCards must be greater than 1. Got ${numOfCards}`)
+    if(!Number.isInteger(numOfCards) || numOfCards < 1) {
+      throw new Error(`numOfCards must be greater than 0. Got ${numOfCards}`)
     }
     if(numOfCards > this._deck.length) {
       throw new Error(`numOfCards must be less than deck size. Deck size: ${this._deck.length}, got: ${numOfCards}`)
@@ -56,4 +55,4 @@ class Game {
   }
 }
 
-module.exports = Game
+export default Game

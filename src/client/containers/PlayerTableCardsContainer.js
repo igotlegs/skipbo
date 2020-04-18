@@ -7,9 +7,12 @@ import {
 import CardOrigin from '../constants/CardOrigin'
 
 const mapStateToProps = (state, ownProps) => {
+  const myIdentity = state.players.get('myIdentity')
+  const myTableCards = state.tableCards.find((val, key) => key === myIdentity)
+
 	return {
 		selectedCard: state.selectedCard.get('card'),
-		cardStacks: state.myTableCards.get('stacks').toJS(),
+		cardStacks: myTableCards.get('stacks').toJS(),
     acceptCards: state.selectedCard.get('origin') === CardOrigin.PLAYER_HAND,
 	}
 }
@@ -17,13 +20,11 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onSelectCardStack: (stack, card) => {
-    	if(Number.isInteger(card)) {
-        dispatch(addCardToPlayerTableCards(stack, card))	
-    	}
+      dispatch(addCardToPlayerTableCards(stack, card))
     },
     onSelectCard: (stack, card) => {
       dispatch(selectCard(card, CardOrigin.PLAYER_TABLE_STACK, stack))
-    }
+    },
   }
 }
 

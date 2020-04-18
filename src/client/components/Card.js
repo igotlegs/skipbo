@@ -11,7 +11,10 @@ export const CardSize = {
 }
 
 const Card = (props) => {
-  const value = isSkipBo(props.value) ? getSkipBoValue() : props.value
+  const cardValue = isSkipBo(props.value) ? 
+    getSkipBoValue() : 
+    props.value.number
+
   const colorStyle = getCardColorStyle(props.value)
   const className = classNames(
                       "card", 
@@ -25,17 +28,17 @@ const Card = (props) => {
         <div style={colorStyle} className="card__inner-edge">
           <div className="card__header">
             <span className="card__value">
-              {value}
+              {cardValue}
             </span>
           </div>
           <div className="card__center">
             <span className="card__value card__value--shadow">
-              {value}
+              {cardValue}
             </span>
           </div>
           <div className="card__footer">
             <span className="card__value card__value--upside-down">
-              {value}
+              {cardValue}
             </span>
           </div>
         </div>
@@ -51,27 +54,32 @@ function getSkipBoValue() {
          </div>
 }
 
-function getCardColorStyle(value) {
+function getCardColorStyle(card) {
   const style = {background: ''}
 
-  if(value === 0) {
+  if(card.number === 0) {
     style.background = '#de7b1f'
   }
-  if(value >= 1 && value <= 4) {
+  if(card.number >= 1 && card.number <= 4) {
     style.background = '#0926b3'
   }
-  if(value >= 5 && value <= 8) {
+  if(card.number >= 5 && card.number <= 8) {
     style.background = '#0b940b'
   }
-  if(value >= 9 && value <= 12) {
-    style.background = '#b31e1e'    
+  if(card.number >= 9 && card.number <= 12) {
+    style.background = '#b31e1e'
   }
 
   return style
 }
 
+export const CardValuePropType = PropTypes.shape({
+  id: PropTypes.string.isRequired,
+  number: PropTypes.number.isRequired,
+})
+
 Card.propTypes = {
-  value: PropTypes.number,
+  value: CardValuePropType.isRequired,
   onSelect: PropTypes.func,
   size: PropTypes.oneOf([CardSize.SMALL, CardSize.MEDIUM, CardSize.LARGE]),
   selected: PropTypes.bool,

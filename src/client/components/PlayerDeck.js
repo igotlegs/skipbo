@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Card from './Card'
+import Card, { CardValuePropType, } from './Card'
 import './PlayerDeck.css'
 
 const PlayerDeck = (props) => {
@@ -17,7 +17,7 @@ const PlayerDeck = (props) => {
 
 PlayerDeck.propTypes = {
   size: PropTypes.number,
-  topMostCard: PropTypes.number,
+  topMostCard: CardValuePropType.isRequired,
   onSelectCard: PropTypes.func.isRequired,
 }
 

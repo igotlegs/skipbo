@@ -1,4 +1,4 @@
-import { fromJS } from 'immutable'
+import { fromJS, } from 'immutable'
 import { 
   ADD_CARD_TO_GAME_TABLE,
   SELECT_CARD,
@@ -7,6 +7,9 @@ import {
   REMOVE_CARD_FROM_PLAYER_TABLE_STACK,
   SET_PLAYER_TABLE_CARDS_VIOLATION,
   REMOVE_CARD_FROM_PLAYER_HAND,
+  SET_PLAYER_DECK,
+  INIT_PLAYER_TABLE_CARDS,
+  ADD_CARDS_TO_MY_HAND,
 } from '../constants/ActionTypes'
 import { isSkipBo, isNextCard, } from '../utils'
 
@@ -26,24 +29,6 @@ const selectedCardInitialState = fromJS({
   stack: null,
 })
 
-// Fetch from server
-const myDeckInitialState = fromJS({
-  size: 25, 
-  topMostCard: 4,
-})
-
-const myTableCardsInitialState = fromJS({
-  stacks: [
-    [],
-    [],
-    [],
-    [],
-  ],
-  previousMoveFailed: false,
-})
-
-const myHandInitialState = fromJS([1, 2, 11, 7, 0])
-
 export function gameTable(state = gameTableInitialState, action) {
   switch(action.type) {
     case ADD_CARD_TO_GAME_TABLE:
@@ -52,23 +37,32 @@ export function gameTable(state = gameTableInitialState, action) {
       const setViolation = (state, flag) => state.set('previousMoveFailed', flag)
       
       // Empty stack and card must be SkipBo or 1.
-      if(lastCardInStack === null && action.card > 1) {
+      if(lastCardInStack === null && action.card.number > 1) {
         return setViolation(state, true)
       }
       // Non-empty stack 
       if(lastCardInStack !== null) {
-        // ... and card must be next in sequence to the last card.
+        // ... and card must be next in sequence to the last non-SkipBo card.
         if(!isSkipBo(lastCardInStack) && !isNextCard(action.card, lastCardInStack)) {
           return setViolation(state, true)
         }
         // ... and last card is SkipBo. Also, when the card being placed is not SkipBo 
         // we have to check if it's next in sequence to the last card.
         if(isSkipBo(lastCardInStack) && !isSkipBo(action.card)) {
-          const skipBos = stack.reverse().takeWhile(isSkipBo)
-          const lastNonSkipBoIndex = stack.size - skipBos.size - 1
-          const skipBoValueInStack = stack.get(lastNonSkipBoIndex) + skipBos.size
+          let lastSkipBoWithRealValue = null
 
-          if(!isNextCard(action.card, skipBoValueInStack)) {
+          if(stack.size > 1) {
+            const skipBos = stack.reverse().takeWhile(isSkipBo)
+            const lastNonSkipBoIndex = stack.size - skipBos.size - 1
+            const skipBoValueInStack = stack.get(lastNonSkipBoIndex).number + skipBos.size
+            lastSkipBoWithRealValue = skipBos.last()
+            lastSkipBoWithRealValue.number = skipBoValueInStack
+          } else {
+            lastSkipBoWithRealValue = stack.first()
+            lastSkipBoWithRealValue.number = 1
+          }
+
+          if(!isNextCard(action.card, lastSkipBoWithRealValue)) {
             return setViolation(state, true)
           }
         }
@@ -78,7 +72,6 @@ export function gameTable(state = gameTableInitialState, action) {
         ['stacks', action.stack],
         cardStack => cardStack.push(action.card)
       )
-      
       return setViolation(newState, false)
 
     default: 
@@ -86,34 +79,50 @@ export function gameTable(state = gameTableInitialState, action) {
   }
 }
 
-export function myDeck(state = myDeckInitialState, action) {
+export function playerDeck(state = fromJS({}), action) {
   switch(action.type) {
+    case SET_PLAYER_DECK:
+      let playerDeck = {}
+      
+      playerDeck[action.playerId] = {
+        playerId: action.playerId,
+        topMostCard: action.topMostCard,
+        size: action.size,
+      }
+
+      return state.merge(fromJS(playerDeck))
+
     default: 
       return state
   }
 }
 
-export function myHand(state = myHandInitialState, action) {
+export function tableCards(state = fromJS({}), action) {
   switch(action.type) {
-    case REMOVE_CARD_FROM_PLAYER_HAND:
-      return state.remove(state.indexOf(action.card))
+    case INIT_PLAYER_TABLE_CARDS:
+      const playerTableCards = {}
 
-    default: 
-      return state
-  }
-}
+      playerTableCards[action.playerId] = {
+        playerId: action.playerId,
+        stacks: [
+          [],
+          [],
+          [],
+          [],
+        ],
+        previousMoveFailed: false,
+      }
+      return state.merge(fromJS(playerTableCards))
 
-export function myTableCards(state = myTableCardsInitialState, action) {
-  switch(action.type) {
     case ADD_CARD_TO_PLAYER_TABLE_CARDS:
       return state.updateIn(
-        ['stacks' ,action.stack],
+        [action.playerId, 'stacks', action.stack],
         cardStack => cardStack.push(action.card)
       ).set('previousMoveFailed', false)
 
     case REMOVE_CARD_FROM_PLAYER_TABLE_STACK:
       return state.updateIn(
-        ['stacks', action.stack],
+        [action.playerId, 'stacks', action.stack],
         cardStack => cardStack.pop()
       )
 
@@ -139,6 +148,19 @@ export function selectedCard(state = selectedCardInitialState, action) {
         origin: null, 
         stack: null,
       })
+
+    default: 
+      return state
+  }
+}
+
+export function myHand(state = fromJS([]), action) {
+  switch(action.type) {
+    case REMOVE_CARD_FROM_PLAYER_HAND:
+      return state.filter((card) => card.id !== action.card.id)
+
+    case ADD_CARDS_TO_MY_HAND: 
+      return state.concat(action.cards)
 
     default: 
       return state

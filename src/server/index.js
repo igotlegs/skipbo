@@ -1,7 +1,7 @@
 import express from 'express'
 import responseFormatter from 'express-response-formatter'
-import setupEnvironment from './setup-endpoints'
 import setupEnvironment from './setup-environment'
+import setupEndpoints from './setup-endpoints'
 
 const app = express()
 const port = 3001

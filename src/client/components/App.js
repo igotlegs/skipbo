@@ -16,13 +16,15 @@ export default function App(props) {
 function renderContent(gameStage) {
   switch(gameStage) {
     case GameStage.INIT:
+    case GameStage.PRE_GAME:
       return <Lobby/>
-
-    // case GameStage.PRE_GAME:
-    //   return <ChooseWhoStarts/> etc
 
     case GameStage.IN_PROGRESS:
       return <GameLayout/>
+
+    case GameStage.GAME_END:
+      console.log('not implemented yet')
+      return null
 
     default:
       throw new Error(`Unkown game stage ${gameStage}`)

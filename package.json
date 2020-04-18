@@ -19,6 +19,7 @@
     "axios": "^0.19.2",
     "classnames": "^2.2.6",
     "compression": "^1.7.4",
+    "connect-redis": "^4.0.4",
     "express": "^4.17.1",
     "express-response-formatter": "^1.2.7",
     "express-session": "^1.17.0",
@@ -31,6 +32,7 @@
     "react-dom": "^16.13.0",
     "react-redux": "^7.2.0",
     "react-scripts": "3.4.0",
+    "redis": "^3.0.2",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "shortid": "^2.2.15"
@@ -40,8 +42,8 @@
     "build-frontend": "react-scripts build",
     "test-frontend": "react-scripts test",
     "eject": "react-scripts eject",
-    "build-server": "babel ./src/server -d ./build",
-    "run-server": "yarn run build-server && nodemon ./build/index.js"
+    "build-server": "babel ./src/shared -w -d ./build/shared & babel ./src/server -w -d ./build/server",
+    "run-server": "node ./build/server/index.js"
   },
   "eslintConfig": {
     "extends": "react-app"
