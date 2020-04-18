@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import { isSkipBo, noop, } from '../utils'
+import { isSkipBo, noop, } from '../../shared/utils'
 import './Card.css'
 
 export const CardSize = {

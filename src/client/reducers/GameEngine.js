@@ -11,7 +11,10 @@ import {
   INIT_PLAYER_TABLE_CARDS,
   ADD_CARDS_TO_MY_HAND,
 } from '../constants/ActionTypes'
-import { isSkipBo, isNextCard, } from '../utils'
+import { isSkipBo, isNextCard, } from '../../shared/utils'
+import {
+  validateAddingCardsToPlayerHand,
+} from '../../shared/game-validations'
 
 const gameTableInitialState = fromJS({
   stacks: [
@@ -160,7 +163,12 @@ export function myHand(state = fromJS([]), action) {
       return state.filter((card) => card.id !== action.card.id)
 
     case ADD_CARDS_TO_MY_HAND: 
-      return state.concat(action.cards)
+      const [success, errMsg] = validateAddingCardsToPlayerHand(action.cards, state.toJS())
+
+      if(success) {
+        return state.concat(fromJS(action.cards))
+      }
+      return state
 
     default: 
       return state

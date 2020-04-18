@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import { isSkipBo, } from '../utils'
+import { isSkipBo, } from '../../shared/utils'
 import Card, { CardSize, CardValuePropType, } from './Card'
 import './GameTable.css'
 

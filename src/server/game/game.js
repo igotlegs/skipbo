@@ -1,6 +1,6 @@
 import shortid from 'shortid'
 import Deck from './deck'
-import GameRules from '../../shared/GameRules'
+import GameRules from '../../shared/game-rules'
 
 class Game {
   constructor(playerCount) {

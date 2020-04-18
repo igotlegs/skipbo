@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { noop, } from '../utils'
+import { noop, } from '../../shared/utils'
 import Card, { CardSize, CardValuePropType, } from './Card'
 import './PlayerTableCards.css'
 

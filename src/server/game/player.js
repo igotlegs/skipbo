@@ -1,5 +1,8 @@
 import shortid from 'shortid'
-import GameRules from '../../shared/GameRules'
+import {
+  validateAddingCardsToPlayerHand,
+} from '../../shared/game-validations'
+import GameRules from '../../shared/game-rules'
 
 class Player {
   constructor(name, deck) {
@@ -48,16 +51,13 @@ class Player {
   }
 
   addCardsToHand(cards) {
-    if(Array.isArray(cards) && cards.length > 0) {
-      if(this._hand.length + cards.length === GameRules.PLAYER_HAND_SIZE) {
-        this._hand = this._hand.concat(cards)
-        return
-      }
-      const errBase = 'Player hand must hold max. 5 cards! '
-      const errDetail = `Current player hand: ${this._hand.length}, tried to add: ${cards.length} cards.`
-      throw new Error(errBase + errDetail)
+    const [success, errMsg] = validateAddingCardsToPlayerHand(cards, this._hand)
+    
+    if(success) {
+      this._hand = this._hand.concat(cards)
+    } else {
+      throw new Error(errMsg)
     }
-    throw new Error(`Cards must be a non empty array! Got: ${cards}`)
   }
 
   getTopMostCardFromDeck() {
