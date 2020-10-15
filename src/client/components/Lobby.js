@@ -75,16 +75,8 @@ function InitGame(props) {
 }
 
 function JoinGame(props) {
-  const [playerName, setPlayerName] = React.useState('')
-  const onPlayerNameChange = (event) => setPlayerName(event.target.value)
   const shareProps = {
     "readOnly": true,
-  }
-  
-  const addPlayerOnEnter = (event) => {
-    if(event.key === 'Enter' && playerName.length >= GameRules.MIN_PLAYER_NAME_LENGTH) {
-      props.onAddPlayer(playerName)
-    }
   }
 
   return (
@@ -94,7 +86,7 @@ function JoinGame(props) {
       </span>
       <div className="lobby__share">
         <TextField 
-          defaultValue={props.gameId}
+          defaultValue={getGameLink(props.gameId)}
           label="Pelilinkki"
           size="small"
           variant="outlined"
@@ -103,32 +95,29 @@ function JoinGame(props) {
       </div>
       <div className="lobby__join">
         <span className="lobby__joined-players">
-          Pelaajat 0/{props.playerCount}
+          Pelaajat {props.joinedPlayers.length}/{props.playerCount}
         </span>
-        <div className="lobby__player">
-          <TextField 
-            className="lobby__player-name"
-            label="Pelaajan nimi" 
-            size="small"
-            variant="outlined"
-            value={playerName}
-            onChange={onPlayerNameChange}
-            onKeyDown={addPlayerOnEnter} />
-          <Button 
-            variant="outlined"
-            color="secondary"
-            startIcon={<PersonAdd/>}
-            onClick={() => props.onAddPlayer(playerName)}
-            disabled={playerName.length < GameRules.MIN_PLAYER_NAME_LENGTH}>
-              Lisää
-          </Button>
+        {
+          props.joined !== true ? 
+            <JoinForm onAddPlayer={props.onAddPlayer}/> :
+            null
+        }
+        <div>
+          {props.joinedPlayers.map((player) => {
+            return (
+              <div key={player.id} className="lobby__joined-player">
+                {player.name}
+              </div>  
+            )
+          })}
         </div>
       </div>
       <div className="lobby__start-game-btn">
         <Fab 
           variant="extended" 
           color="primary" 
-          onClick={() => props.onStartGame()}>
+          onClick={() => props.onStartGame()}
+          disabled={props.joinedPlayers.length < props.playerCount}>
             Aloita peli
         </Fab>
       </div>
@@ -136,9 +125,51 @@ function JoinGame(props) {
   )
 }
 
+function JoinForm(props) {
+  const [playerName, setPlayerName] = React.useState('')
+  const onPlayerNameChange = (event) => setPlayerName(event.target.value)
+  const addPlayerOnEnter = (event) => {
+    if(event.key === 'Enter' && playerName.length >= GameRules.MIN_PLAYER_NAME_LENGTH) {
+      props.onAddPlayer(playerName)
+    }
+  }
+
+  return (
+    <div className="lobby__player">
+      <TextField 
+        className="lobby__player-name"
+        label="Pelaajan nimi" 
+        size="small"
+        variant="outlined"
+        value={playerName}
+        onChange={onPlayerNameChange}
+        onKeyDown={addPlayerOnEnter} />
+      <Button 
+        variant="outlined"
+        color="secondary"
+        startIcon={<PersonAdd/>}
+        onClick={() => props.onAddPlayer(playerName)}
+        disabled={playerName.length < GameRules.MIN_PLAYER_NAME_LENGTH}>
+          Lisää
+      </Button>
+    </div>
+  )
+}
+
+function getGameLink(gameId) {
+  return window.location.protocol + '//' +
+    window.location.host + '/' +
+    gameId
+}
+
 Lobby.propTypes = {
   gameId: PropTypes.string,
   playerCount: PropTypes.number,
+  joined: PropTypes.bool,
+  joinedPlayers: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  })),
   onNewGame: PropTypes.func.isRequired,
   onStartGame: PropTypes.func.isRequired,
   onAddPlayer: PropTypes.func.isRequired,
@@ -147,6 +178,8 @@ Lobby.propTypes = {
 Lobby.defaultProps = {
   gameId: null,
   playerCount: GameRules.MIN_PLAYERS,
+  joinedPlayers: [],
+  joined: false,
 }
 
 export default Lobby

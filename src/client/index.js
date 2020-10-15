@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import { ThemeProvider } from '@material-ui/core/styles'
 import reducers from './reducers'
 import App from './containers/AppContainer'
+import API from './api/Api'
 import theme from './theme'
 
 import './reset.css'
@@ -23,9 +24,12 @@ const store = createStore(
   )
 )
 
+API.Socket.connect()
+API.Socket.onMsg(store.dispatch)
+
 if(module.hot) {
-  module.hot.accept('./reducers/GameEngine', () =>
-    store.replaceReducer(require('./reducers/GameEngine').default)
+  module.hot.accept('./reducers', () =>
+    store.replaceReducer(require('./reducers').default)
   )
 }
 

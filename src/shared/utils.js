@@ -21,3 +21,5 @@ export const isCard = (card) => {
 }
 
 export const noop = () => {}
+
+export const isProd = () => process.env.NODE_ENV === 'production'

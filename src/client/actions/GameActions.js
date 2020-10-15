@@ -1,6 +1,6 @@
 import API from '../api/Api'
 import { 
-  CREATE_GAME, 
+  SET_GAME_DATA, 
   SETUP_GAME, 
   START_GAME,
   NEW_PLAYER, 
@@ -14,10 +14,7 @@ export const createNewGame = (playerCount) => {
   return (dispatch) => {
     API.createGame(playerCount)
       .then((data) => {
-        dispatch({
-          type: CREATE_GAME,
-          ...data,
-        })
+        dispatch(setGameData(data.id, data.playerCount))
       })
       .catch((e) => {
         console.log(e)
@@ -25,9 +22,15 @@ export const createNewGame = (playerCount) => {
   }
 }
 
+export const setGameData = (id, playerCount) => ({
+  type: SET_GAME_DATA,
+  id,
+  playerCount,
+})
+
 export const setupGame = (data) => {
   return (dispatch) => {
-    dispatch({type: SETUP_GAME})
+    dispatch({ type: SETUP_GAME })
     dispatch(setPlayerDeck(data))
     dispatch(initPlayerTableCards(data.id))
 
@@ -59,13 +62,9 @@ export const joinGame = (playerName) => {
     API.addPlayerToGame(playerName, gameId)
       .then((data) => {
         dispatch(setWhoAmI(data.id))
-        dispatch({
-          type: NEW_PLAYER,
-          id: data.id,
-          name: data.name,
-        })
-
+        dispatch(newPlayer(data.id, data.name))
         dispatch(setupGame(data))
+        API.Socket.sendMsg(newPlayer(data.id, data.name))
       })
       .catch((e) => {
         console.log(e)
@@ -73,7 +72,26 @@ export const joinGame = (playerName) => {
   }
 }
 
+export const newPlayer = (id, name) => ({
+  type: NEW_PLAYER,
+  id,
+  name,
+})
+
 export const setWhoAmI = (id) => ({
   type: SET_PLAYER_IDENTITY,
   id,
 })
+
+export const getGame = (gameId) => {
+  return (dispatch) => {
+    API.getGame(gameId)
+      .then((data) => {
+        dispatch(setGameData(data.id, data.playerCount))
+        data.players.map((player) => dispatch(newPlayer(player.id, player.name)))
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }
+}

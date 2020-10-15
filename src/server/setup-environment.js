@@ -1,18 +1,27 @@
 import express from 'express'
-import session from 'express-session'
 import helmet from 'helmet'
 import compression from 'compression'
 import morgan from 'morgan'
+import responseFormatter from 'express-response-formatter'
+import { isProd, } from '../shared/utils'
+import setupSession from './session/setup'
+import WsConnectionManager from './websockets/ws-connection-manager'
 
-function setupEnvironment(app) {
+function setupEnvironment(app, server) {
+  setMiddleware(app)
+  setupLogging(app)
+  setupConnectionManager(server, setupSession(app))
+}
+
+function setMiddleware(app) {
+  app.use(responseFormatter())
+  app.use(express.json())
+
   if(isProd()) {
     app.use(helmet())
     app.use(compression())
     app.use(express.static('build'))
   }
-  
-  setupLogging(app)
-  setupSessionHandling(app)
 }
 
 function setupLogging(app) {
@@ -20,21 +29,8 @@ function setupLogging(app) {
   app.use(morgan(logLevel))
 }
 
-function setupSessionHandling(app) {
-  if(isProd()) {
-    console.log('prod session not implemented!')
-    return 
-  }
-
-  app.use(session({
-    secret: 'super weasel',
-    resave: false,
-    saveUninitialized: false,
-  }))
-}
-
-function isProd() {
-  return process.env.NODE_ENV === 'production'
+function setupConnectionManager(server, sessionParser) {
+  WsConnectionManager(server, sessionParser)
 }
 
 export default setupEnvironment

@@ -37,6 +37,10 @@ class Game {
       null
   }
 
+  getPlayers() {
+    return this._players
+  }
+
   getPlayerCount() {
     return this._playerCount
   }

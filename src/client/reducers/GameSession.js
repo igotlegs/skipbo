@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
 import { 
-  CREATE_GAME, 
+  SET_GAME_DATA, 
   START_GAME,
   SETUP_GAME, 
   NEW_PLAYER, 
@@ -21,7 +21,7 @@ const playersInitialState = fromJS({
 
 export function game(state = gameInitialState, action) {
   switch(action.type) {
-    case CREATE_GAME: 
+    case SET_GAME_DATA: 
       return state.merge({
         id: action.id,
         playerCount: action.playerCount,

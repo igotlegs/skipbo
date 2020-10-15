@@ -1,18 +1,16 @@
 import express from 'express'
-import responseFormatter from 'express-response-formatter'
+import http from 'http'
 import setupEnvironment from './setup-environment'
 import setupEndpoints from './setup-endpoints'
 
 const app = express()
+const server = http.createServer(app)
 const port = 3001
 
-app.use(responseFormatter())
-app.use(express.json())
-
-setupEnvironment(app)
+setupEnvironment(app, server)
 setupEndpoints(app)
 
-app.listen(port, () => {
-  const startMsg = `Game server started, port: ${port} \nReady to play?`
+server.listen(port, () => {
+  const startMsg = `Game server started on port: ${port} \nReady to play?`
   console.log(startMsg)
 })

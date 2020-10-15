@@ -6,6 +6,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     gameId: state.game.get('id'),
     playerCount: state.game.get('playerCount'),
+    joinedPlayers: state.players.get('entities').toList().toJS(),
+    joined: state.players.get('myIdentity') !== null
   }
 }
 

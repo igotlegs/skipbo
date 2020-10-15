@@ -2,7 +2,12 @@ import express from 'express'
 import { findFromRegistry, } from '../game/registry'
 import Player from '../game/player'
 import GameRules from '../../shared/game-rules'
-import { setIdentity, getIdentity, } from '../session-handlers'
+import { 
+  getSessionData, 
+  setPlayerIdToSession,
+  setGameIdToSession,
+  sessionIdentityOk,
+} from '../session/session-handlers'
 
 const ERR_GAME_ID = 'gameId must be a non empty string!'
 const ERR_ADD_JOIN_PLAYER = 'ERR_ADD_JOIN_PLAYER'
@@ -23,7 +28,8 @@ function player() {
       const player = new Player(req.body.playerName, playerDeck)
       
       game.addPlayer(player)
-      setIdentity(req, game, player)
+      setPlayerIdToSession(player.getId(), req.session)
+      setGameIdToSession(game.getId(), req.session)
 
       res.formatter.ok({
         id: player.getId(),
@@ -37,14 +43,13 @@ function player() {
     }
   })
   .get('/player/my-hand', (req, res) => {
-    const identity = getIdentity(req)
-
-    if(!identity) {
+    if(!sessionIdentityOk(req.session)) {
       res.formatter.badRequest([ERR_GET_HAND])
       return
     }
 
     try {
+      const identity = getSessionData(req.session)
       const game = findFromRegistry(identity.gameId)
       const player = game.getPlayer(identity.playerId)
 

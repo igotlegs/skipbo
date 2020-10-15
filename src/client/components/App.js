@@ -5,16 +5,33 @@ import Lobby from '../containers/LobbyContainer'
 import GameStage from '../constants/GameStage'
 import './App.css'
 
-export default function App(props) {
-  return (
-    <div className="app">
-      {renderContent(props.gameStage)}
-    </div>
-  )
-}
+export default class App extends React.Component {
 
-function renderContent(gameStage) {
-  switch(gameStage) {
+  componentDidMount() {
+    let params = window.location.pathname.split('/')
+    params = params.filter((p) => p !== '')
+
+    if(params.length === 1) {
+      this.props.onGameId(params[0])
+    }
+  }
+
+  componentDidUpdate() {
+    if(this.props.gameId) {
+      window.history.replaceState({}, null, `/${this.props.gameId}`)
+    }
+  }
+
+  render() {
+    return (
+      <div className="app">
+        {this.renderContent()}
+      </div>
+    )
+  }
+
+ renderContent() {
+  switch(this.props.gameStage) {
     case GameStage.INIT:
     case GameStage.PRE_GAME:
       return <Lobby/>
@@ -27,12 +44,15 @@ function renderContent(gameStage) {
       return null
 
     default:
-      throw new Error(`Unkown game stage ${gameStage}`)
+      throw new Error(`Unkown game stage ${this.props.gameStage}`)
+    }
   }
 }
 
 App.propTypes = {
-  gameStage: PropTypes.oneOf(Object.values(GameStage))
+  gameStage: PropTypes.oneOf(Object.values(GameStage)),
+  gameId: PropTypes.string,
+  onGameId: PropTypes.func.isRequired,
 }
 
 App.defaultProps = {
